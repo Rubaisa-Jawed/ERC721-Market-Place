@@ -26,7 +26,7 @@ async function main() {
   await kitties.deployed();
   console.log("CryptoKitties Contract deployed to:", kitties.address);
 
-  await kitties.mintNFT(a1.address, 88);
+  await kitties.mintNFT(a2.address, 88);
   // await kitties.mintNFT(a3.address, 89);
   // await kitties.mintNFT(a2.address, 90);
 

@@ -34,6 +34,7 @@ async function main() {
 
   const a1 = await provider.getSigner(0)
   const a2 = await provider.getSigner(1)
+  const a3 = await provider.getSigner(2)
   // console.log()
   // console.log(a1, a2)
   // const NFTMarket = await new ethers.ContractFactory(NFTArtifact.abi,NFTArtifact.bytecode,a1);
@@ -78,11 +79,11 @@ async function main() {
     res.send('NFT has been Delisted!');
   });
 
-  app.delete('/buy', async (req, res) => {
-    await market.buyNFT(req.body.tokenAddress, req.body.tokenId, req.body.buyer, req.body.price);
-    res.send('NFT has been Bought!');
-    console.log(await puppies.ownerOf(req.body.tokenId))
-  });
+  // app.delete('/buy', async (req, res) => {
+  //   await market.connect(a3).buyNFT(req.body.tokenAddress, req.body.tokenId, req.body.buyer, req.body.price);
+  //   res.send('NFT has been Bought!');
+  //   console.log(await puppies.ownerOf(req.body.tokenId))
+  // });
 
 
   const port = process.env.PORT || 3000;
