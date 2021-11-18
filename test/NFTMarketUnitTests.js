@@ -25,7 +25,7 @@ describe("ERC721 Market Place Test", () => {
 
     describe("Enlisting an NFT", function () {
 
-        it("should fail it address tries to enlist an already enlisted NFT", async function () {
+        it("should fail if address tries to enlist an already enlisted NFT", async function () {
             await kitties.connect(addr1).approve(market.address, 88);
             await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
                 value: ethers.utils.parseUnits("0.025", "ether")
@@ -61,6 +61,13 @@ describe("ERC721 Market Place Test", () => {
             });
             const owner = await kitties.ownerOf(88);
             expect(owner).to.equal(market.address);
+        });
+
+        it("should emit an enlisted NFT Event", async function() {
+            await kitties.connect(addr1).approve(market.address, 88);
+            await expect(market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
+                value: ethers.utils.parseUnits("0.025", "ether")
+            })).to.emit(market, 'NFTenlisted').withArgs(kitties.address, 88);
         });
 
     });
@@ -100,6 +107,15 @@ describe("ERC721 Market Place Test", () => {
             expect(owner).to.equal(addr1.address);
         });
 
+        it("should emit a Delist NFT Event", async function() {
+            await kitties.connect(addr1).approve(market.address, 88);
+            await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
+                value: ethers.utils.parseUnits("0.025", "ether")
+            });
+            await expect(market.connect(addr1).delistNFT(kitties.address, 88, addr1.address))
+                .to.emit(market, 'NFTdelisted').withArgs(kitties.address, 88);
+        });
+
     });
 
     describe("Buying an Enlisted NFT", function () {
@@ -134,6 +150,15 @@ describe("ERC721 Market Place Test", () => {
             await market.buyNFT(kitties.address, 88, addr3.address, 10);
             const owner = await kitties.ownerOf(88);
             expect(owner).to.equal(addr3.address);
+        });
+
+        it("should emit a Bought NFT Event", async function() {
+            await kitties.connect(addr1).approve(market.address, 88);
+            await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
+                value: ethers.utils.parseUnits("0.025", "ether")
+            });
+            await expect(market.connect(addr1).buyNFT(kitties.address, 88, addr3.address, 10))
+                .to.emit(market, 'NFTbought').withArgs(kitties.address, 88);
         });
 
     });
