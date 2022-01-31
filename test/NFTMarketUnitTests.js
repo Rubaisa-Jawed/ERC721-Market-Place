@@ -75,7 +75,7 @@ describe("ERC721 Market Place Test", () => {
     describe("Delisting an NFT", function () {
 
         it("should fail if NFT does not exist in the market", async function () {
-            await kitties.connect(addr1).approve(market.address, 88);
+            // await kitties.connect(addr1).approve(market.address, 88);
             await expect(market.connect(addr1).delistNFT(kitties.address, 88, addr1.address))
                 .to.be.revertedWith("NFT does not exist!");
         });
@@ -139,7 +139,9 @@ describe("ERC721 Market Place Test", () => {
             await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
                 value: ethers.utils.parseUnits("0.025", "ether")
             });
-            await market.buyNFT(kitties.address, 88, addr3.address, 10);
+            await market.buyNFT(kitties.address, 88, addr3.address, 10, {
+                value: 10
+            });
         });
 
         it("should transfer NFT from Market Place to Buyer", async function() {
@@ -147,7 +149,9 @@ describe("ERC721 Market Place Test", () => {
             await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
                 value: ethers.utils.parseUnits("0.025", "ether")
             });
-            await market.buyNFT(kitties.address, 88, addr3.address, 10);
+            await market.buyNFT(kitties.address, 88, addr3.address, 10, {
+                value: 10
+            });
             const owner = await kitties.ownerOf(88);
             expect(owner).to.equal(addr3.address);
         });
@@ -157,8 +161,9 @@ describe("ERC721 Market Place Test", () => {
             await market.connect(addr1).enlistNFT(kitties.address, 88, 10, {
                 value: ethers.utils.parseUnits("0.025", "ether")
             });
-            await expect(market.connect(addr1).buyNFT(kitties.address, 88, addr3.address, 10))
-                .to.emit(market, 'NFTbought').withArgs(kitties.address, 88);
+            await expect(market.connect(addr1).buyNFT(kitties.address, 88, addr3.address, 10, {
+                value: 10
+            })).to.emit(market, 'NFTbought').withArgs(kitties.address, 88);
         });
 
     });

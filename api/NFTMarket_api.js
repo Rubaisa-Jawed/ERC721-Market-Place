@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const NFTArtifact = require('../artifacts/contracts/NFTMarket.sol/NFTMarket.json');
 const tokenArtifact = require('../artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json');
-const { ethers } = require('ethers');
+const ethers = require('ethers');
 const express = require('express');
 const { register } = require('ts-node');
 const app = express();
@@ -20,7 +20,7 @@ db.once('open', () => console.log('Connected to Database'))
 app.use(express.json())
 
 async function main() {
-  window.ethereum.enable()
+  // window.ethereum.enable()
   
   const provider = await new ethers.providers.JsonRpcProvider(); //goes to localhost directly if no url entered
 

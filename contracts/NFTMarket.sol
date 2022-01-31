@@ -56,9 +56,10 @@ contract NFTMarket is IERC721Receiver {
         emit NFTdelisted(tokenAddress, tokenId);
     }
 
-    function buyNFT(address tokenAddress, uint256 tokenId, address buyer, uint256 price) public {
+    function buyNFT(address tokenAddress, uint256 tokenId, address buyer, uint256 price) public payable {
         require(enlistedNFTs[tokenAddress][tokenId]._exists == true, "NFT does not exist!");
         require(enlistedNFTs[tokenAddress][tokenId]._price == price, "Incorrect Price!");
+        require(msg.value == price, "Insuffient price!");
         IERC721 newNFT = IERC721(tokenAddress);
         newNFT.safeTransferFrom(address(this), buyer, tokenId);
         payable(buyer).transfer(price);
